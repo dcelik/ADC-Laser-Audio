@@ -16,8 +16,7 @@ void loop() {
     // say what you got:
     Serial.print("I wrote: ");
     Serial.println(incomingByte, DEC);
-    int i;
-    for (i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++) {
       j = bitRead(incomingByte,i);
       digitalWrite(laser,j);
       Serial.println(j);
