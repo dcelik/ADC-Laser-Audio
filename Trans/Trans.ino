@@ -16,11 +16,13 @@ void loop() {
     // say what you got:
     Serial.print("I wrote: ");
     Serial.println(incomingByte, DEC);
-    for (int i = 0; i < 8; i++) {
+    for (int i = 7; i >= 0; i--) {
       j = bitRead(incomingByte,i);
       digitalWrite(laser,j);
       Serial.println(j);
-      //incomingByte >>= 1;  // shift the bits in lotsofbits right by one bit (equivalent to dividing by 2)
+//      incomingByte >>= 1;  // shift the bits in lotsofbits right by one bit (equivalent to dividing by 2)
     }
+    digitalWrite(laser,0);
+//    Serial.println("Sent");
   }
 }
