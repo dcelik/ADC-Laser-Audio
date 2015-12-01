@@ -12,6 +12,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   int readval = PINB & 00000001;
   if(readval!=0){
+    Serial.println(PINB,BIN);
     wrd = 00000010;
     wrd += (PINB & 00000001);
     wrd<<=1;
@@ -26,7 +27,7 @@ void loop() {
     wrd += (PINB & 00000001);
     wrd<<=1;
     wrd += (PINB & 00000001);
-    Serial.println(wrd);
+    Serial.println(wrd,BIN);
   }
 }
 
