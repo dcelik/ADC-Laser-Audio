@@ -1,33 +1,32 @@
-int reciever = 8;
-int val;
-int t;
-float TotF = 0;
-int Ones = 0;
-float Freq;
-int next;
+byte wrd = 00000000;
 
 void setup() {
-  // put your setup code here, to run once:
+  //setup digital pins 0-7 (makes serial work)
   Serial.begin(9600);
-  pinMode(reciever,INPUT);
-  next = millis();
+  DDRD = B11111110; // digital pins 7,6,5,4,3,2,1,0
+  //sets 8-13 as input
+  DDRB = B00111110; // digital pins -,-,13,12,11,10,9,8 
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-//  t = millis();
-//  val = digitalRead(reciever);
-//  if (val == 0){
-//    Ones++;
-//  }
-//  TotF++;
-//  if (t == (next+1000)){
-//    Freq = TotF/Ones*1.0;
-//    TotF = 0;
-//    Ones = 0;
-//    Serial.println(Freq);
-//    next = millis();
-//  }
-  Serial.print("I recieved: ");
-  Serial.println(abs(val-1));
+  int readval = PINB & 00000001;
+  if(readval!=0){
+    wrd = 00000010;
+    wrd += (PINB & 00000001);
+    wrd<<=1;
+    wrd += (PINB & 00000001);
+    wrd<<=1;
+    wrd += (PINB & 00000001);
+    wrd<<=1;
+    wrd += (PINB & 00000001);
+    wrd<<=1;
+    wrd += (PINB & 00000001);
+    wrd<<=1;
+    wrd += (PINB & 00000001);
+    wrd<<=1;
+    wrd += (PINB & 00000001);
+    Serial.println(wrd);
+  }
 }
+

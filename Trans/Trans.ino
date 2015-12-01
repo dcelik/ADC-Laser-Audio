@@ -1,11 +1,11 @@
-int incomingByte = 0;
-int laser = 13;
-int j;
+ #define LASER_TOGGLE     PINB |= 1<<5;     //switch LEDPIN state
+ #define LASER_OFF        PORTB &= ~(1<<5); //turn of LEDPIN
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  pinMode(laser,OUTPUT);
+  DDRD = B11111110;
+  DDRB = B00011111;
 }
 
 void loop() {
