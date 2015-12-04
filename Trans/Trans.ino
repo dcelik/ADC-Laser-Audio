@@ -20,7 +20,7 @@ static const int pin_num = 5;                  // Equal to (desired pin number)-
                                                // Equal to desired pin number for 7->0 inputs
                                                    
 #define LASER_ON         PINB |=   1<<pin_num; // turn on LEDPIN
-#define LASER_OFF        PINB &= ~(1<<pin_num);// turn of LEDPIN
+#define LASER_OFF        PINB &= ~(1<<pin_num);// turn off LEDPIN
 
 byte sentbytes[10]       ={0,0,0,0,0,
                            0,0,0,0,0};// Initialize and zero array
@@ -47,8 +47,11 @@ void loop() {
     readingindex++;
     #ifdef DEBUG
       Serial.print("I wrote: ");
-      Serial.println(sentbytes[readingindex], BIN);
+      Serial.println(sentbytes[readingindex-1], BIN);
     #endif
+  }
+  else {
+    sentbytes[readingindex-1] = 0;
   }
   
   curmillis = millis();
@@ -59,13 +62,16 @@ void loop() {
       sendingindex++;
       curbyte = sentbytes[sendingindex];// set our new byte to send
     }
-    int temp = (curbyte>>byteindex) & 1;// get the bit we want to send
-    if(temp==1){
-      LASER_ON;
+    while (byteindex != 0){
+      byteindex--;
+      int temp = (curbyte>>byteindex) & 1;// get the bit we want to send
+      Serial.println(temp);
+      if(temp==1){
+        LASER_ON;
+      }
+      else{
+        LASER_OFF;
+      }
     }
-    else{
-      LASER_OFF;
-    }
-    byteindex--;
   }
 }
