@@ -1,28 +1,71 @@
- #define LASER_TOGGLE     PINB |= 1<<5;     //switch LEDPIN state
- #define LASER_OFF        PORTB &= ~(1<<5); //turn of LEDPIN
+// ---------------------------------------------------------------------------
+// This software is in the public domain, furnished "as is", without technical
+// support, and with no warranty, express or implied, as to its usefulness for
+// any purpose.
+//
+// Trans.ino
+// Arduino code for transmitting data across digital pins. Designed to work
+// with a pulsing laser. Uses a constant delay in order to keep timing across 
+// the transmitter and the receiver equal. Implements port and bit 
+// manipulation in order to reduce computational and temporal costs.
+//
+// Author: Deniz Celik, Jacob Riedel
+// Revision: 12042015
+// ---------------------------------------------------------------------------
+
+#define DEBUG;                                 // Turns on print statements that are useful for debugging
+                                               // Comment out if you want least verbose code
+                                                   
+static const int pin_num = 5;                  // Equal to (desired pin number)-8 for 13->8 inputs
+                                               // Equal to desired pin number for 7->0 inputs
+                                                   
+#define LASER_ON         PINB |=   1<<pin_num; // turn on LEDPIN
+#define LASER_OFF        PINB &= ~(1<<pin_num);// turn of LEDPIN
+
+byte sentbytes[10]       ={0,0,0,0,0,
+                           0,0,0,0,0};// Initialize and zero array
+byte curbyte             = 00000000;  // Byte to store current sending byte
+unsigned long lastmillis = 0;         // last time recorded (ms)
+unsigned long curmillis  = 0;         // current time recorded (ms)
+int readingindex         = 0;         // index for reading from serial
+int sendingindex         = 0;         // index for knowing which byte we are sending
+int byteindex            = 0;         // index for knowing where in the byte we are
+const int interval       = 5;         // interval between sending in milliseconds
 
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
-  DDRD = B11111110;
-  DDRB = B00011111;
+  Serial.begin(9600);//Start serial
+                     // setup digital pins 0-7 (makes serial work)
+  DDRD = B11111110;  // digital pins 7,6,5,4,3,2,1,0
+                     // sets 8-13 as input
+  DDRB = B00011111;  // digital pins -,-,13,12,11,10,9,8
+  LASER_OFF;         // make sure laser is turned off
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  if (Serial.available() > 0) {
-    // read the incoming byte:
-    incomingByte = Serial.read();
-    // say what you got:
-    Serial.print("I wrote: ");
-    Serial.println(incomingByte, DEC);
-    for (int i = 7; i >= 0; i--) {
-      j = bitRead(incomingByte,i);
-      digitalWrite(laser,j);
-      Serial.println(j);
-//      incomingByte >>= 1;  // shift the bits in lotsofbits right by one bit (equivalent to dividing by 2)
+  if (readingindex<10 && Serial.available() > 0){// index first to reduce computation calls
+    sentbytes[readingindex] = Serial.read();     // add the bytes we need to send
+    readingindex++;
+    #ifdef DEBUG
+      Serial.print("I wrote: ");
+      Serial.println(sentbytes[readingindex], BIN);
+    #endif
+  }
+  
+  curmillis = millis();
+  if(curmillis - lastmillis >=interval){// check if it has been interval milliseconds since we sampled
+    lastmillis = curmillis;
+    if(byteindex==0){                   // check if we have finished sending our current byte (or we haven't sent any yet);
+      byteindex = 8;                    // reset index, MSB first to make reconstructing easier
+      sendingindex++;
+      curbyte = sentbytes[sendingindex];// set our new byte to send
     }
-    digitalWrite(laser,0);
-//    Serial.println("Sent");
+    int temp = (curbyte>>byteindex) & 1;// get the bit we want to send
+    if(temp==1){
+      LASER_ON;
+    }
+    else{
+      LASER_OFF;
+    }
+    byteindex--;
   }
 }
