@@ -66,12 +66,9 @@ void loop() {
         Serial.println();
       #endif
       byteindex = 8;                    // reset index, MSB first to make reconstructing easier
-      //readingindex = 10;
+      
       curbyte = sentbytes[sendingindex];// set our new byte to send
-      //      Serial.println(curbyte);
-//      sendingindex++;
     }
-    //    while (byteindex != 0){
     byteindex--;
     int temp = (curbyte >> byteindex) & 1; // get the bit we want to send
     #ifdef DEBUG
@@ -86,10 +83,5 @@ void loop() {
     if (byteindex == 0){
       sendingindex++;
     }
-    //    }
-//    #ifdef DEBUG
-//      Serial.println();
-//      Serial.println(curbyte, BIN);
-//    #endif
   }
 }
