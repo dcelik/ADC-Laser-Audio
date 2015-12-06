@@ -10,7 +10,7 @@
 // manipulation in order to reduce computational and temporal costs.
 //
 // Author: Deniz Celik, Jacob Riedel
-// Revision: 12042015
+// Revision: 12052015
 // ---------------------------------------------------------------------------
 
 #define DEBUG;                                 // Turns on print statements that are useful for debugging
@@ -19,31 +19,36 @@
 static const int pin_num = 5;                  // Equal to (desired pin number)-8 for 13->8 inputs
 // Equal to desired pin number for 7->0 inputs
 
-#define LASER_ON         PORTB |=   1<<pin_num; // turn on LEDPIN
-#define LASER_OFF        PORTB &=  ~(1<<pin_num);// turn off LEDPIN
+#define LASER_ON         PORTB |=   1<<pin_num;   // turn on LEDPIN
+#define LASER_OFF        PORTB &=  ~(1<<pin_num); // turn off LEDPIN
 
-byte sentbytes[10]       = {0, 0, 0, 0, 0,
-                            0, 0, 0, 0, 0
-                           };// Initialize and zero array
-byte curbyte             = 00000000;  // Byte to store current sending byte
-unsigned long lastmillis = 0;         // last time recorded (ms)
-unsigned long curmillis  = 0;         // current time recorded (ms)
-int readingindex         = 0;         // index for reading from serial
-int sendingindex         = 0;         // index for knowing which byte we are sending
-int byteindex            = 0;         // index for knowing where in the byte we are
-const int interval       = 50;         // interval between sending in milliseconds
+static const int packetsize = 10;
+
+byte sentbytes[packetsize]  = {0};      // Initialize and zero array
+byte curbyte                = 00000000; // Byte to store current sending byte
+unsigned long lastmillis    = 0;        // last time recorded (ms)
+unsigned long curmillis     = 0;        // current time recorded (ms)
+int readingindex            = 0;        // index for reading from serial
+int sendingindex            = 0;        // index for knowing which byte we are sending
+int byteindex               = 0;        // index for knowing where in the byte we are
+const int interval          = 50;       // interval between sending in milliseconds
 
 void setup() {
-  Serial.begin(9600);//Start serial
-  // setup digital pins 0-7 (makes serial work)
-  DDRD = B11111110;  // digital pins 7,6,5,4,3,2,1,0
-  // sets 8-13 as input
-  DDRB = B00111111;  // digital pins -,-,13,12,11,10,9,8
-  PORTB = B00000000;
-  LASER_OFF;         // make sure laser is turned off
+  Serial.begin(9600); // Start serial
+                      // setup digital pins 0-7 (makes serial work)
+  DDRD = B11111110;   // digital pins 7,6,5,4,3,2,1,0
+                      // sets 8-13 as input
+  DDRB = B00111111;   // digital pins -,-,13,12,11,10,9,8
+  LASER_OFF;          // make sure laser is turned off
 }
 
 void loop() {
+  if(readingindex == sendingindex){
+    memset(sentbytes, 0, sizeof sentbytes); // Sets mem of sentbytes to 0 on reset
+    readingindex = 0; 
+    sendingindex = 0; 
+  }
+  
   if (readingindex < 10 && Serial.available() > 0) { // index first to reduce computation calls
     sentbytes[readingindex] = Serial.read();     // add the bytes we need to send
     readingindex++;
@@ -54,14 +59,15 @@ void loop() {
   }
 
   curmillis = millis();
-  if (curmillis - lastmillis >= interval) { // check if it has been interval milliseconds since we sampled
+  if (readingindex == 10 && sendingindex != 10 && curmillis - lastmillis >= interval) { // check if it has been interval milliseconds since we sampled
     lastmillis = curmillis;
     if (byteindex == 0) {               // check if we have finished sending our current byte (or we haven't sent any yet);
+      Serial.println();
       byteindex = 8;                    // reset index, MSB first to make reconstructing easier
-
+      //readingindex = 10;
       curbyte = sentbytes[sendingindex];// set our new byte to send
       //      Serial.println(curbyte);
-      sendingindex++;
+//      sendingindex++;
     }
     //    while (byteindex != 0){
     byteindex--;
@@ -75,10 +81,13 @@ void loop() {
     else {
       LASER_OFF;
     }
+    if (byteindex == 0){
+      sendingindex++;
+    }
     //    }
-    #ifdef DEBUG
-      Serial.println();
-      Serial.println(curbyte, BIN);
-    #endif
+//    #ifdef DEBUG
+//      Serial.println();
+//      Serial.println(curbyte, BIN);
+//    #endif
   }
 }
