@@ -76,7 +76,7 @@ void loop() {
     #endif
     if (temp == 1) {
       LASER_ON;
-    }
+    } 
     else {
       LASER_OFF;
     }
