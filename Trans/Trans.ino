@@ -20,7 +20,7 @@ static const int pin_num = 5;                  // Equal to (desired pin number)-
 // Equal to desired pin number for 7->0 inputs
 
 #define LASER_ON         PORTB |=   1<<pin_num; // turn on LEDPIN
-#define LASER_OFF        PORTB &=   0<<pin_num;// turn off LEDPIN
+#define LASER_OFF        PORTB &=  ~(1<<pin_num);// turn off LEDPIN
 
 byte sentbytes[10]       = {0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0
@@ -31,14 +31,14 @@ unsigned long curmillis  = 0;         // current time recorded (ms)
 int readingindex         = 0;         // index for reading from serial
 int sendingindex         = 0;         // index for knowing which byte we are sending
 int byteindex            = 0;         // index for knowing where in the byte we are
-const int interval       = 500;         // interval between sending in milliseconds
+const int interval       = 50;         // interval between sending in milliseconds
 
 void setup() {
   Serial.begin(9600);//Start serial
   // setup digital pins 0-7 (makes serial work)
   DDRD = B11111110;  // digital pins 7,6,5,4,3,2,1,0
   // sets 8-13 as input
-  DDRB = B00011111;  // digital pins -,-,13,12,11,10,9,8
+  DDRB = B00111111;  // digital pins -,-,13,12,11,10,9,8
   PORTB = B00000000;
   LASER_OFF;         // make sure laser is turned off
 }
@@ -51,9 +51,6 @@ void loop() {
     Serial.print("I wrote: ");
     Serial.println(sentbytes[readingindex - 1], BIN);
 #endif
-  }
-  else {
-    sentbytes[readingindex - 1] = 0;
   }
 
   curmillis = millis();
@@ -69,7 +66,9 @@ void loop() {
     //    while (byteindex != 0){
     byteindex--;
     int temp = (curbyte >> byteindex) & 1; // get the bit we want to send
-    Serial.print(temp);
+    #ifdef DEBUG
+      Serial.print(temp);
+    #endif
     if (temp == 1) {
       LASER_ON;
     }
@@ -77,7 +76,9 @@ void loop() {
       LASER_OFF;
     }
     //    }
-    Serial.println();
-    Serial.println(curbyte, BIN);
+    #ifdef DEBUG
+      Serial.println();
+      Serial.println(curbyte, BIN);
+    #endif
   }
 }
