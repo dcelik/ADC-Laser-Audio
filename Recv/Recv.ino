@@ -16,11 +16,11 @@
 #define DEBUG;               // Turns on print statements that are useful for debugging
                              // Comment out if you want least verbose code
 
-byte wrd = 00000000;         // byte to store our currently sampling byte
-unsigned long lastmillis = 0;// last time recorded (ms)
-unsigned long curmillis = 0; // current time recorded (ms)
-const int interval = 5;      // interval between sampling in milliseconds
-int wrdsamples = 0;          // number of bits sampled in our byte
+byte wrd = 00000000;          // byte to store our currently sampling byte
+unsigned long lastmillis = 0; // last time recorded (ms)
+unsigned long curmillis = 0;  // current time recorded (ms)
+const int interval = 5;       // interval between sampling in milliseconds
+int wrdsamples = 0;           // number of bits sampled in our byte
 
 void setup() {
   Serial.begin(9600);// Start serial
