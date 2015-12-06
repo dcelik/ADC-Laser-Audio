@@ -62,7 +62,9 @@ void loop() {
   if (readingindex == 10 && sendingindex != 10 && curmillis - lastmillis >= interval) { // check if it has been interval milliseconds since we sampled
     lastmillis = curmillis;
     if (byteindex == 0) {               // check if we have finished sending our current byte (or we haven't sent any yet);
-      Serial.println();
+      #ifdef DEBUG
+        Serial.println();
+      #endif
       byteindex = 8;                    // reset index, MSB first to make reconstructing easier
       //readingindex = 10;
       curbyte = sentbytes[sendingindex];// set our new byte to send
