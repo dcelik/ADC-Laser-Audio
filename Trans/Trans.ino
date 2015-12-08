@@ -10,7 +10,7 @@
 // manipulation in order to reduce computational and temporal costs.
 //
 // Author: Deniz Celik, Jacob Riedel
-// Revision: 12052015
+// Revision: 12082015
 // ---------------------------------------------------------------------------
 
 #define DEBUG;                                 // Turns on print statements that are useful for debugging
@@ -22,15 +22,12 @@ static const int pin_num = 5;                  // Equal to (desired pin number)-
 #define LASER_ON         PORTB |=   1<<pin_num;   // turn on LEDPIN
 #define LASER_OFF        PORTB &=  ~(1<<pin_num); // turn off LEDPIN
 
-static const int packetsize = 10;
+byte preamble               = B10101011;
+unsigned long data          = 0;
+byte ending                 = B00000001;
 
-byte sentbytes[packetsize]  = {0};      // Initialize and zero array
-byte curbyte                = 00000000; // Byte to store current sending byte
 unsigned long lastmillis    = 0;        // last time recorded (ms)
 unsigned long curmillis     = 0;        // current time recorded (ms)
-int readingindex            = 0;        // index for reading from serial
-int sendingindex            = 0;        // index for knowing which byte we are sending
-int byteindex               = 0;        // index for knowing where in the byte we are
 const int interval          = 50;       // interval between sending in milliseconds
 
 void setup() {
@@ -43,45 +40,78 @@ void setup() {
 }
 
 void loop() {
-  if(readingindex == sendingindex){
-    memset(sentbytes, 0, sizeof sentbytes); // Sets mem of sentbytes to 0 on reset
-    readingindex = 0; 
-    sendingindex = 0; 
-  }
   
-  if (readingindex < 10 && Serial.available() > 0) { // index first to reduce computation calls
-    sentbytes[readingindex] = Serial.read();     // add the bytes we need to send
-    readingindex++;
-#ifdef DEBUG
-    Serial.print("I wrote: ");
-    Serial.println(sentbytes[readingindex - 1], BIN);
-#endif
+  for(int i = 0; i < 4; i++){
+    if(Serial.available()>0){ 
+      byte temp = Serial.read();
+      //Serial.println(temp, BIN);
+      for(int j = 7; j >= 0; j--){
+         data <<= 1;
+         data = (data+((temp>>j) & 1));
+      }
+    }
+    else{
+      i--;
+    }
   }
+  #ifdef DEBUG
+    printbin(preamble);
+    printdata();
+    printbin(ending);
+  #endif
 
-  curmillis = millis();
-  if (readingindex == 10 && sendingindex != 10 && curmillis - lastmillis >= interval) { // check if it has been interval milliseconds since we sampled
-    lastmillis = curmillis;
-    if (byteindex == 0) {               // check if we have finished sending our current byte (or we haven't sent any yet);
-      #ifdef DEBUG
-        Serial.println();
-      #endif
-      byteindex = 8;                    // reset index, MSB first to make reconstructing easier
-      
-      curbyte = sentbytes[sendingindex];// set our new byte to send
+  for( int index = 47; index >=0; index--){
+    curmillis = millis();
+    if(curmillis - lastmillis >= interval){
+      lastmillis = curmillis;
+      if(index>39){
+        if(((preamble>>(index-40)) & 1) == 1){
+          LASER_ON;
+        }
+        else{
+          LASER_OFF;
+        }
+      }
+      else if(index>7){
+        if(((data>>(index-8)) & 1) == 1){
+          LASER_ON;
+        }
+        else{
+          LASER_OFF;
+        }
+      }
+      else{
+        if(((ending>>index) & 1) == 1){
+          LASER_ON;
+        }
+        else{
+          LASER_OFF;
+        }
+      }
     }
-    byteindex--;
-    int temp = (curbyte >> byteindex) & 1; // get the bit we want to send
-    #ifdef DEBUG
-      Serial.print(temp);
-    #endif
-    if (temp == 1) {
-      LASER_ON;
-    } 
-    else {
-      LASER_OFF;
-    }
-    if (byteindex == 0){
-      sendingindex++;
+    else{
+      index++;
     }
   }
+  delay(interval);
+  LASER_OFF;
+}
+
+void printbin(byte b){
+  Serial.print((b>>7) & 1);
+  Serial.print((b>>6) & 1);
+  Serial.print((b>>5) & 1);
+  Serial.print((b>>4) & 1);
+  Serial.print((b>>3) & 1);
+  Serial.print((b>>2) & 1);
+  Serial.print((b>>1) & 1);
+  Serial.print((b>>0) & 1);
+  Serial.println();
+}
+
+void printdata(){
+  for(int k = 31; k>=0; k--){
+    Serial.print((data>>k) & 1);
+  }
+  Serial.println();
 }
