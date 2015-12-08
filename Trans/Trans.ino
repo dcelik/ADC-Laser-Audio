@@ -24,11 +24,11 @@ static const int pin_num = 5;                  // Equal to (desired pin number)-
 
 byte preamble               = B10101011;
 unsigned long data          = 0;
-byte ending                 = B00000001;
+byte ending                 = 0;
 
 unsigned long lastmillis    = 0;        // last time recorded (ms)
 unsigned long curmillis     = 0;        // current time recorded (ms)
-const int interval          = 50;       // interval between sending in milliseconds
+const int interval          = 25;       // interval between sending in milliseconds
 
 void setup() {
   Serial.begin(9600); // Start serial
@@ -59,6 +59,7 @@ void loop() {
     printdata();
     printbin(ending);
   #endif
+  delay(interval);
 
   for( int index = 47; index >=0; index--){
     curmillis = millis();
@@ -95,6 +96,7 @@ void loop() {
   }
   delay(interval);
   LASER_OFF;
+  delay(1000);
 }
 
 void printbin(byte b){
