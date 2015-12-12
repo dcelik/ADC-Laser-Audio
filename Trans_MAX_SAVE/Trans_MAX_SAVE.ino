@@ -5,7 +5,7 @@ static const int pin_num = 5;
 
 unsigned long data1 = 0;
 unsigned long data2 = 0;
-byte array[512] = {0};
+byte array[8] = {0};
 byte interval = 20;
 
 void setup() {
@@ -21,7 +21,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   int i = 0;
-  while (i<511){
+  while (i<7){
     byte x = PINB;
     PORTB = (x <<5);
     memset(array+i,x&1,1);
@@ -39,20 +39,16 @@ void loop() {
     //}
     i++;
   }
+  LASER_OFF;
+  for(int k = 7; k>=0; k--){
+    byte temp = array[k];
+    //for(int j = 7; j>=0; j--){
+    //  Serial.print((temp>>j)&1);
+    //}
+    Serial.print(temp);
+    Serial.print(" ");
+  }
+  Serial.println();
   //LASER_OFF;
-  //for(int k = 31; k>=0; k--){
-  //  Serial.print((data4>>k) & 1);
-  //}
-  //for(int k = 31; k>=0; k--){
-  //  Serial.print((data3>>k) & 1);
-  //}
-  //for(int k = 31; k>=0; k--){
-  //  Serial.print((data2>>k) & 1);
-  //}
-  //for(int k = 31; k>=0; k--){
-  //  Serial.print((data1>>k) & 1);
-  //}
-  //Serial.println();
-  //LASER_OFF;
-  //delay(1000);
+  delay(1000);
 }
