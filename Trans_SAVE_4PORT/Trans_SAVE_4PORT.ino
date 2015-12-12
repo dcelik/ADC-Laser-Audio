@@ -1,8 +1,9 @@
 static const int pin_num = 5;
 
-#define LASER_ON         PORTB |=   1<<pin_num;   // turn on LEDPIN
-#define LASER_OFF        PORTB &=  ~(1<<pin_num); // turn off LEDPIN
-#define DATASIZE         8//1024
+#define LASER_ON         PORTD |=   1<<pin_num;   // turn on LEDPIN
+#define LASER_OFF        PORTD &=  ~(1<<pin_num); // turn off LEDPIN
+#define DATASIZE         1024
+#define HALFDATA         512
 
 unsigned long data1 = 0;
 unsigned long data2 = 0;
@@ -16,7 +17,7 @@ void setup() {
                       // setup digital pins 0-7 (makes serial work)
   DDRD = B01111110;   // digital pins 7,6,5,4,3,2,1,0
                       // sets 8-13 as input
-  DDRB = B00111110;   // digital pins -,-,13,12,11,10,9,8
+  DDRB = B00110000;   // digital pins -,-,13,12,11,10,9,8
   LASER_OFF;          // make sure laser is turned off
 }
 
@@ -27,16 +28,18 @@ void loop() {
   int j = 0;
   while (i<DATASIZE){
     byte x = PINB;
-    PORTB = (x <<5);
-    temp = (temp<<1)+(x&1);
-    if(j%8==0){
-      memset(array+i,temp,1);
-      i++;
-    }
-    j++;
+    PORTD = x<<2;
+    temp = (temp<<4)+(x&B1111);
+    
+    x = PINB;
+    PORTD = x<<2;
+    temp = (temp<<4)+(x&B1111);
+    
+    memset(array+i,temp,1);
+    i++;
   }
   //Serial.println(millis()-curmillis);
-  LASER_OFF;
+  PORTD = B0000<<2;
   for(int k = 0; k<DATASIZE; k++){
     byte t = array[k];
     Serial.print((t>>7)&1);
@@ -52,5 +55,5 @@ void loop() {
   Serial.println();
   //Serial.print(millis()-curmillis);
   //LASER_OFF;
-  delay(800-(millis()-curmillis));
+  delay(1000-(millis()-curmillis));
 }
