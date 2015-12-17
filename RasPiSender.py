@@ -19,9 +19,20 @@ else:
 
 byteList = []
 
+i = 0
+longByte = ''
+
 for s1 in list(frames):
-	byteList.append(' '.join('{0:08b}'.format(ord(x), 'b') for x in s1))
+	longByte.join('{0:08b}'.format(ord(x), 'b') for x in s1)
+	i += 1
+
+	if (i%128 == 0):
+		byteList.append(longByte)
+		longByte = ''
 	# print byte
+if(longByte!=''):
+	byteList.append(longByte)
+	longByte = ''
 
 print len(byteList);
 
