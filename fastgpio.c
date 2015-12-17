@@ -116,8 +116,8 @@ static void send(PyObject* self, PyObject* args){
 
     /* the O! parses for a Python object (listObj) checked
        to be of type PyList_Type */
-    if (! PyArg_ParseTuple( args, "O!is", &PyList_Type, &listObj, 
-               &cols, &tok )) return NULL;
+    //if (! PyArg_ParseTuple( args, "O!is", &PyList_Type, &listObj, &cols, &tok )) return NULL;
+	if (! PyArg_ParseTuple( args, "O!is", &PyList_Type, &listObj)) return NULL;
 
     /* get the number of lines passed to us */
     numLines = PyList_Size(listObj);
@@ -154,6 +154,6 @@ static PyMethodDef fastgpio_methods[] = {
     {NULL}
 };
 
-void initmyModule(){
+void initfastgpio(){
     (void) Py_InitModule("fastgpio",fastgpio_methods);
 }
