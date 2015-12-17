@@ -43,8 +43,6 @@ volatile unsigned *gpio;
  
 #define GPIO_PULL *(gpio+37) // Pull up/pull down
 #define GPIO_PULLCLK0 *(gpio+38) // Pull up/pull down clock
- 
-void setup_io();
 
 //
 // Set up a memory regions to access GPIO
@@ -112,7 +110,7 @@ static void send(PyObject* self, PyObject* pList){
 	numLines = PyList_Size(pList);
 
     /* should raise an error here. */
-    if (numLines < 0)   return NULL; /* Not a list */
+    if (numLines < 0)   return; /* Not a list */
 
     /* iterate over items of the list, grabbing strings, and parsing
        for numbers */
