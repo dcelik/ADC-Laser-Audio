@@ -138,7 +138,7 @@ static void send(PyObject* self, PyObject* pList){
             else{
                 GPIO_CLR = 1<<27;
             }
-			nanosleep((const struct timespec[]){{0, 1000L}}, NULL);
+			nanosleep((const struct timespec[]){{0, 1L}}, NULL);
         }
     }
 	fprintf(stdout, "SEGFAULT? was: %zd\n", i);
