@@ -24,9 +24,11 @@ for s1 in list(frames):
 for byte in byteList:
 	for i in byte:
 	##Set code to access GPIO here on RasPi. Will print Byte from MSB.
-		if i == 1:
+		if i == '1':
 			IO.output(pin, IO.HIGH)
-		elif i == 0:
+		elif i == '0':
 			IO.output(pin, IO.LOW)
 
 IO.output(pin, IO.LOW)
+
+GPIO.cleanup()
