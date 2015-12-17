@@ -112,6 +112,7 @@ static void send(PyObject* self, PyObject* pList){
 	
 	/* get the number of lines passed to us */
 	numLines = PyList_Size(pList);
+	printf(stdout, "Ref count was: %zd\n", numlines);
 
     /* should raise an error here. */
     if (numLines < 0)   return; /* Not a list */
@@ -132,6 +133,7 @@ static void send(PyObject* self, PyObject* pList){
     //        if(line[j] == '1'){
                 GPIO_SET = 1<<27;
     //        }
+			fprintf(stdout, "Ref count was: %zd\n", line->ob_refcnt);
     //        else if(line[j] == '0'){
                 GPIO_CLR = 1<<27;
     //        }
