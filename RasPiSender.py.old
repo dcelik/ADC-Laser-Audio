@@ -3,10 +3,6 @@
 import wave
 import pyaudio
 
-def stereo_to_mono(hex1, hex2):
-	"""average two hex string samples"""
-	return hex((ord(hex1) + ord(hex2))/2)
-
 wr = wave.open('flesh_wound.wav','rb')
 
 nchannels, sampwidth, framerate, nframes, comptype, compname =  wr.getparams()

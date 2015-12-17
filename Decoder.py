@@ -1,41 +1,83 @@
-import serial
-import msvcrt, time
+# import serial
+# import msvcrt, time
 
-#ser = serial.Serial('COM4', 250000)
-data = [];
-final = [];
-i = 0;
-while True:
-	data.append("000018as78dy1hjg3kjahsfoasfi1u0x");#ser.readline())
-	if msvcrt.kbhit():
-		if msvcrt.getwche() == '\r':
-			break
-	time.sleep(0.1)
+# #ser = serial.Serial('COM4', 250000)
+# data = [];
+# final = [];
+# i = 0;
+# while True:
+# 	data.append("000018as78dy1hjg3kjahsfoasfi1u0x");#ser.readline())
+# 	if msvcrt.kbhit():
+# 		if msvcrt.getwche() == '\r':
+# 			break
+# 	time.sleep(0.1)
 
-print data
+# print data
 
-merged = ''.join(data);
-print merged
+# merged = ''.join(data);
+# print merged
 
-stripped = ''.join(_ for _ in merged if _ in "01")
-print stripped
+# stripped = ''.join(_ for _ in merged if _ in "01")
+# print stripped
 
-firstbit = stripped.lstrip("0");
-print firstbit
+# firstbit = stripped.lstrip("0");
+# print firstbit
 
-for i in range(0,(8-(len(firstbit)%8))):
-	firstbit+="0"
-print firstbit
+# for i in range(0,(8-(len(firstbit)%8))):
+# 	firstbit+="0"
+# print firstbit
 
-for i in range(8,len(firstbit)+8):
-	if(i%8==0):
-		final.append(int(firstbit[i-8:i],2))
+# for i in range(8,len(firstbit)+8):
+# 	if(i%8==0):
+# 		final.append(int(firstbit[i-8:i],2))
 
-print final
-print len(data)
-print len(final)
-print "DONE"
+# print final
+# print len(data)
+# print len(final)
+# print "DONE"
 
+
+import wave
+
+j=8
+new_frames = ''
+f = open( 'rec_bitstream.txt', 'r' )
+string = f.read()
+for i in range(len(string)):
+	if (j - 9 < i):
+		new_frames += (chr(int(string[i:j],2)))
+		j+=8
+f.close()
+
+j=8
+old_frames = ''
+f = open( 'sent_bitstream.txt', 'r' )
+string = f.read()
+for i in range(len(string)):
+	if (j - 9 < i):
+		old_frames += (chr(int(string[i:j],2)))
+		j+=8
+f.close()
+
+print len(old_frames)
+fail = False
+for i in range(len(list(old_frames))): 
+	if old_frames[i] != new_frames[i]:
+		print 'FAILED TEST'
+		print old_frames[i]
+		print new_frames[i]
+		print ''
+		fail=True
+if (fail):
+	print 'Recieved and sent bitstreams are different. Check above for error location.'
+else:
+	print 'ALL BITS EQUAL'
+	print 'Be happy cause it worked...'
+
+ww = wave.open('mono.wav','wb')
+ww.setparams((1,sampwidth,framerate,nframes,comptype,compname))
+
+ww.writeframes(new_frames)
 
 # for i in range(0,len(data)):
 # 	data[i] = data[i].strip('\r\n')
