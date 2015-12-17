@@ -106,10 +106,7 @@ static void send(PyObject* self, PyObject* pList){
 	
     PyObject * strObj;  /* one string in the list */
 	
-	struct timespec delay;
-     
-     delay.tv_sec = 0;
-     delay.tv_nsec = 1L;  /* Half a second in nano's */
+	 /* Half a second in nano's */
 	
 	/* get the number of lines passed to us */
 	numLines = PyList_Size(pList);
@@ -142,7 +139,11 @@ static void send(PyObject* self, PyObject* pList){
                 GPIO_CLR = 1<<27;
             }
 			//usleep(1);
-			nanosleep(&delay, NULL);
+			//nanosleep(&delay, NULL);
+			int k;
+			for(k=0;k<2;k++){
+				asm("nop");
+			}
         }
     }
 	fprintf(stdout, "SEGFAULT? was: %zd\n", i);
