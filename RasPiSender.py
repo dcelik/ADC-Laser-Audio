@@ -1,6 +1,6 @@
 #import RPi.GPIO as IO
 import wave
-import fastgpio
+# import fastgpio
 #import cinpy
 
 pin = 27
@@ -35,9 +35,14 @@ if(longByte!=''):
 	byteList.append(longByte)
 	longByte = ''
 # print byteList
+
+f = open( 'sent_bitstream.txt', 'w' )
+f.write(byteList[0])
+f.close()
+
 print len(byteList);
 
-fastgpio.send(byteList)
+# fastgpio.send(byteList)
 
 #for byte in byteList:
 #	for i in byte:

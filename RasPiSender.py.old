@@ -20,24 +20,52 @@ else:
 #for i in range(len(frames)):
 #print (frames[0::],0)
 # print list(frames)
-
+longByte = ''
 new_frames = ''
+byteList = []
 print wr.getnframes()
 print len(frames)
 for s1 in list(frames):
-	byte = ' '.join('{0:08b}'.format(ord(x), 'b') for x in s1)
+	longByte += ''.join('{0:08b}'.format(ord(x), 'b') for x in s1)
+	# i += 1
+
+	# if (i%128 == 0):
+	# 	byteList.append(longByte)
+	# 	longByte = ''
 	# print byte
-	for i in byte:
-	##Set code to access GPIO here on RasPi. Will print Byte from MSB.
-		# print i
-		pass
-	new_frames+=((chr(int(byte,2))))
-for i in range(len(list(frames))): 
-	if frames[i] != new_frames[i]:
+if(longByte!=''):
+	byteList.append(longByte)
+
+j = 8;
+for i in range(len(longByte)):
+	if (j - 9 < i):
+		new_frames += chr(int(longByte[i:j],2))
+		j+=8
+
+j=8
+old_frames = ''
+f = open( 'sent_bitstream.txt', 'r' )
+string = f.read()
+for i in range(len(string)):
+	if (j - 9 < i):
+		old_frames += (chr(int(string[i:j],2)))
+		j+=8
+f.close()
+
+print len(old_frames)
+fail = False
+for i in range(len(list(old_frames))): 
+	if old_frames[i] != new_frames[i]:
 		print 'FAILED TEST'
-		print ord(frames[i])
+		print old_frames[i]
 		print new_frames[i]
 		print ''
+		fail=True
+if (fail):
+	print 'Recieved and sent bitstreams are different. Check above for error location.'
+else:
+	print 'ALL BITS EQUAL'
+	print 'Be happy cause it worked...'
 
 ww = wave.open('mono.wav','wb')
 ww.setparams((1,sampwidth,framerate,nframes,comptype,compname))
