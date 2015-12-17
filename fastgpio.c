@@ -138,6 +138,15 @@ static void send(PyObject* self, PyObject* pList){
                 GPIO_CLR = 1<<27;
             }
 			asm("nop");
+			asm("nop");
+			asm("nop");
+			asm("nop");
+			asm("nop");
+			asm("nop");
+			asm("nop");
+			asm("nop");
+			asm("nop");
+			asm("nop");//10 NOPS
         }
     }
 	fprintf(stdout, "SEGFAULT? was: %zd\n", i);
