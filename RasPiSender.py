@@ -1,6 +1,5 @@
 import RPi.GPIO as IO
 import wave
-import pyaudio
 
 pin = 27
 
@@ -29,5 +28,5 @@ for byte in byteList:
 			IO.output(pin, IO.HIGH)
 		elif i == 0:
 			IO.output(pin, IO.LOW)
-			
+
 IO.output(pin, IO.LOW)
