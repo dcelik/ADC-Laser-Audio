@@ -109,7 +109,7 @@ static void send(PyObject* self, PyObject* pList){
 	
 	/* get the number of lines passed to us */
 	numLines = PyList_Size(pList);
-	fprintf(stdout, "NUMLINES was: %zd\n", numLines);
+	//fprintf(stdout, "NUMLINES was: %zd\n", numLines);
 
     /* should raise an error here. */
     if (numLines < 0)   return; /* Not a list */
@@ -121,22 +121,23 @@ static void send(PyObject* self, PyObject* pList){
         /* grab the string object from the next element of the list */
         strObj = PyList_GetItem(pList, i); /* Can't fail */
 		
-		fprintf(stdout, "I was: %zd\n", i);
+	//	fprintf(stdout, "I was: %zd\n", i);
 		
         /* make it a string */
         line = PyString_AsString(strObj);
 		
-		fprintf(stdout, "STROBJECT REF count was: %zd\n", strObj->ob_refcnt);
+	//	fprintf(stdout, "STROBJECT REF count was: %zd\n", strObj->ob_refcnt);
 
         for(j=0; j < strlen(line); j++){
-    //        if(line[j] == '1'){
+            if(line[j] == '1'){
                 GPIO_SET = 1<<27;
-    //        }
-			fprintf(stdout, "LINE was: %s\n", line);
-			fprintf(stdout, "LINE[J] was: %c\n", line[j]);
-    //        else if(line[j] == '0'){
+            }
+	//		fprintf(stdout, "LINE was: %s\n", line);
+	//		fprintf(stdout, "LINE[J] was: %c\n", line[j]);
+            else{
                 GPIO_CLR = 1<<27;
-    //        }
+            }
+			//asm("nop");
         }
     }
 	fprintf(stdout, "SEGFAULT? was: %zd\n", i);
