@@ -153,12 +153,52 @@ static void send(PyObject* self, PyObject* pList){
 	return;
 }
 
+static PyObject *readArduino(PyObject *module){
+		int g;
+ 
+	// Set up gpi pointer for direct register access
+	setup_io();
+	 
+	// Switch GPIO 7..11 to output mode
+	 
+	/************************************************************************\
+	 * You are about to change the GPIO settings of your computer.          *
+	 * Mess this up and it will stop working!                               *
+	 * It might be a good idea to 'sync' before running this program        *
+	 * so at least you still have your code changes written to the SD-card! *
+	\************************************************************************/
+	 
+	// Set GPIO pins 7-11 to output
+	for (g=17; g<=17; g++)
+	{
+		INP_GPIO(g); // must use INP_GPIO before we can use OUT_GPIO
+	}
+
+	PyObject *ret = NULL;
+	PyObject *bit = NULL;
+	
+	int output;
+
+	
+	while(1){
+		ch = getChar();
+		if(ch=='~'){break;}
+		bit = PyString_FromFormat(%c, GET_GPIO(17));
+		output = PyList_Append(ret,bit); 
+		fprintf("PRINT %d", output);
+	}
+	
+	assert(! PyErr_Occurred());
+    return ret;
+}
+
 
 
 
 static PyMethodDef fastgpio_methods[] = {
-    {"send", send, METH_O},
-    {NULL}
+    {"send"		  , send	   , METH_O		},
+	{"readArduino", readArduino, METH_NOARGS},
+    {NULL,NULL}
 };
 
 void initfastgpio(){
