@@ -41,7 +41,7 @@ import wave
 
 j=8
 new_frames = ''
-f = open( 'rec_bitstream.txt', 'r' )
+f = open( 'file.txt', 'r' )
 string = f.read()
 for i in range(len(string)):
 	if (j - 9 < i):
