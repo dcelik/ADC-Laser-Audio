@@ -1,6 +1,6 @@
 from distutils.core import setup, Extension
 
-module1 = Extension('fgp',
+module1 = Extension('fastgpio',
                     sources = ['fastgpio.c'])
 
 setup (name = 'FastGPIO',
