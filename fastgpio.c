@@ -137,7 +137,7 @@ static void send(PyObject* self, PyObject* pList){
             else{
                 GPIO_CLR = 1<<27;
             }
-			//asm("nop");
+			asm("nop");
         }
     }
 	fprintf(stdout, "SEGFAULT? was: %zd\n", i);
