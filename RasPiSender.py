@@ -24,10 +24,10 @@ i = 0
 longByte = ''
 
 for s1 in list(frames):
-	longByte.join('{0:08b}'.format(ord(x), 'b') for x in s1)
+	longByte += ''.join('{0:08b}'.format(ord(x), 'b') for x in s1)
 	
 	# print byte
-if(longByte!=''):
+if(longByte != ''):
 	byteList.append(longByte)
 	longByte = ''
 
