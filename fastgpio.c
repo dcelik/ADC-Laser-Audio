@@ -101,8 +101,6 @@ static void send(PyObject* self, PyObject* pList){
 		OUT_GPIO(g);
 	}
 
-
-
     int numLines;       /* how many lines we passed for parsing */
 	char * line;		/* pointer to the line as a string */
 	
@@ -138,7 +136,7 @@ static void send(PyObject* self, PyObject* pList){
             else{
                 GPIO_CLR = 1<<27;
             }
-			nanosleep((const struct timespec[]){{0, 1L}}, NULL);
+			usleep(1);
         }
     }
 	fprintf(stdout, "SEGFAULT? was: %zd\n", i);
