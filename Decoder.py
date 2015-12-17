@@ -39,9 +39,13 @@
 
 import wave
 
+wr = wave.open('flesh_wound.wav','rb')
+
+nchannels, sampwidth, framerate, nframes, comptype, compname =  wr.getparams()
+
 j=8
 new_frames = ''
-f = open( 'file.txt', 'r' )
+f = open( 'temp.txt', 'r' )
 string = f.read()
 for i in range(len(string)):
 	if (j - 9 < i):
@@ -60,8 +64,16 @@ for i in range(len(string)):
 f.close()
 
 print len(old_frames)
+
+if len(old_frames)>len(new_frames):
+	leng = len(new_frames)
+elif len(old_frames)<len(new_frames):
+	leng = len(old_frames)
+else:
+	leng = len(old_frames)
+
 fail = False
-for i in range(len(list(old_frames))): 
+for i in range(leng): 
 	if old_frames[i] != new_frames[i]:
 		print 'FAILED TEST'
 		print old_frames[i]
@@ -73,6 +85,9 @@ if (fail):
 else:
 	print 'ALL BITS EQUAL'
 	print 'Be happy cause it worked...'
+
+print len(old_frames)
+print len(new_frames)
 
 ww = wave.open('mono.wav','wb')
 ww.setparams((1,sampwidth,framerate,nframes,comptype,compname))
