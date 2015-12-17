@@ -1,5 +1,6 @@
 import RPi.GPIO as IO
 import wave
+import cinpy
 
 pin = 27
 
