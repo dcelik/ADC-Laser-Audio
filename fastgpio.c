@@ -80,7 +80,7 @@ void setup_io()
  
 } // setup_io
 
-static void send(PyObject* self, PyObject* args){
+static void send(PyObject* self, PyObject* pList){
 	int g;
  
 	// Set up gpi pointer for direct register access
@@ -104,23 +104,12 @@ static void send(PyObject* self, PyObject* args){
 
     //Liberally copied from http://code.activestate.com/lists/python-list/31841/
 
-    char * tok;         /* delimiter tokens for strtok */
-    int cols;           /* number of cols to parse, from the left */
 
     int numLines;       /* how many lines we passed for parsing */
-    char * line;        /* pointer to the line as a string */
-    char * token;       /* token parsed by strtok */
-
-    PyObject * listObj; /* the list of strings */
-    PyObject * strObj;  /* one string in the list */
-
-    /* the O! parses for a Python object (listObj) checked
-       to be of type PyList_Type */
-    //if (! PyArg_ParseTuple( args, "O!is", &PyList_Type, &listObj, &cols, &tok )) return NULL;
-	if (! PyArg_ParseTuple( args, "O!is", &PyList_Type, &listObj)) return NULL;
-
-    /* get the number of lines passed to us */
-    numLines = PyList_Size(listObj);
+	char * line;
+	
+	/* get the number of lines passed to us */
+	numLines = PyList_Size(pList);
 
     /* should raise an error here. */
     if (numLines < 0)   return NULL; /* Not a list */
@@ -130,10 +119,12 @@ static void send(PyObject* self, PyObject* args){
 	int i,j;
     for (i=0; i<numLines; i++){
         /* grab the string object from the next element of the list */
-        strObj = PyList_GetItem(listObj, i); /* Can't fail */
+        strObj = PyList_GetItem(pList, i); /* Can't fail */
 
         /* make it a string */
         line = PyString_AsString( strObj );
+		
+		fprintf(stdout, "Ref count was: %zd\n", strObj->ob_refcnt);
 
         for(j=0; j < strlen(line); j++){
     //        if(line[j] == '1'){
@@ -150,7 +141,7 @@ static void send(PyObject* self, PyObject* args){
 
 
 static PyMethodDef fastgpio_methods[] = {
-    {"send", send, METH_VARARGS},
+    {"send", send, METH_O},
     {NULL}
 };
 
