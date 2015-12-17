@@ -182,15 +182,15 @@ static PyObject *readArduino(PyObject *module){
 	
 
 	
-	while(1){
-		ch = getchar();
-		if(ch=='~'){break;}
+	//while(1){
+	//	ch = getchar();
+	//	if(ch=='~'){break;}
 		bit = PyString_FromFormat("%c", GET_GPIO(17));
 		output = PyList_Append(ret,bit); 
 		fprintf("PRINT %d", output);
-	}
+	//}
 	
-	assert(! PyErr_Occurred());
+	//assert(! PyErr_Occurred());
     return ret;
 }
 
