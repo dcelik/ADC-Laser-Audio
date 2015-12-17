@@ -153,8 +153,7 @@ static void send(PyObject* self, PyObject* pList){
 	return;
 }
 
-static void
-GPIOExport(PyObject *module)
+static void GPIOExport()
 {
 #define BUFFER_MAX 32
 	char buffer[BUFFER_MAX];
@@ -197,14 +196,17 @@ static PyObject *readArduino(PyObject *module){
 	PyObject *ret = NULL;
 	PyObject *bit = NULL;
 	
-	char ch;
-	int output;
+	while (1){
+		GPIOExport();
+	}
+	//char ch;
+	//int output;
 	
 	//while(1){
 	//	ch = getchar();
 	//	if(ch=='~'){break;}
-		bit = PyString_FromFormat("%zd", GET_GPIO(17));
-		output = PyList_Append(ret,); 
+	//	bit = PyString_FromFormat("%zd", GET_GPIO(17));
+	//	output = PyList_Append(ret,); 
 	//	fprintf("PRINT %d", output);
 	//}
 	
