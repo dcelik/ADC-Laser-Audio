@@ -177,13 +177,15 @@ static PyObject *readArduino(PyObject *module){
 	PyObject *ret = NULL;
 	PyObject *bit = NULL;
 	
+	char ch;
 	int output;
+	
 
 	
 	while(1){
 		ch = getChar();
 		if(ch=='~'){break;}
-		bit = PyString_FromFormat(%c, GET_GPIO(17));
+		bit = PyString_FromFormat("%c", GET_GPIO(17));
 		output = PyList_Append(ret,bit); 
 		fprintf("PRINT %d", output);
 	}
