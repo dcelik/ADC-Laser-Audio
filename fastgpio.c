@@ -106,13 +106,11 @@ static void send(PyObject* self, PyObject* pList){
     int numLines;       /* how many lines we passed for parsing */
 	char * line;		/* pointer to the line as a string */
 	
-	
-    PyObject * listObj; /* the list of strings */
     PyObject * strObj;  /* one string in the list */
 	
 	/* get the number of lines passed to us */
 	numLines = PyList_Size(pList);
-	fprintf(stdout, "Ref count was: %zd\n", numlines);
+	fprintf(stdout, "Ref count was: %zd\n", numLines);
 
     /* should raise an error here. */
     if (numLines < 0)   return; /* Not a list */
