@@ -146,7 +146,7 @@ static void send(PyObject* self, PyObject* pList){
 			//}
         }
     //}
-	fprintf(stdout, "SEGFAULT? was: %zd\n", i);
+	fprintf(stdout, "SEGFAULT? was: %zd\n", 0);
 	return;
 }
 
