@@ -1,5 +1,6 @@
 // Set GPIO pin 4 to output
 #include <Python.h>
+#include <time.h>
 
 //
 //  How to access GPIO registers from C-code on the Raspberry-Pi
@@ -137,16 +138,7 @@ static void send(PyObject* self, PyObject* pList){
             else{
                 GPIO_CLR = 1<<27;
             }
-			asm("nop");
-			asm("nop");
-			asm("nop");
-			asm("nop");
-			asm("nop");
-			asm("nop");
-			asm("nop");
-			asm("nop");
-			asm("nop");
-			asm("nop");//10 NOPS
+			nanosleep((const struct timespec[]){{0, 1000L}}, NULL);
         }
     }
 	fprintf(stdout, "SEGFAULT? was: %zd\n", i);
