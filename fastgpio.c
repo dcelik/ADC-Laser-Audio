@@ -100,7 +100,6 @@ static void send(PyObject* self, PyObject* pList){
 		OUT_GPIO(g);
 	}
 
-    //Liberally copied from http://code.activestate.com/lists/python-list/31841/
 
 
     int numLines;       /* how many lines we passed for parsing */
