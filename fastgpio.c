@@ -153,6 +153,26 @@ static void send(PyObject* self, PyObject* pList){
 	return;
 }
 
+static void
+GPIOExport(PyObject *module)
+{
+#define BUFFER_MAX 32
+	char buffer[BUFFER_MAX];
+	ssize_t bytes_written;
+	int fd;
+ 
+	fd = open("export", O_WRONLY);
+	if (-1 == fd) {
+		fprintf(stderr, "Failed to open export for writing!\n");
+		return(-1);
+	}
+ 
+	bytes_written = snprintf(buffer, BUFFER_MAX, "%d", GET_GPIO(17));
+	write(fd, buffer, bytes_written);
+	close(fd);
+	return;
+}
+
 static PyObject *readArduino(PyObject *module){
 		int g;
  
@@ -180,14 +200,12 @@ static PyObject *readArduino(PyObject *module){
 	char ch;
 	int output;
 	
-
-	
 	//while(1){
 	//	ch = getchar();
 	//	if(ch=='~'){break;}
-		bit = PyString_FromFormat("%c", GET_GPIO(17));
-		output = PyList_Append(ret,bit); 
-		fprintf("PRINT %d", output);
+		bit = PyString_FromFormat("%zd", GET_GPIO(17));
+		output = PyList_Append(ret,); 
+	//	fprintf("PRINT %d", output);
 	//}
 	
 	//assert(! PyErr_Occurred());
