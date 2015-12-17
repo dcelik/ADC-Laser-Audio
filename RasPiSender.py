@@ -31,4 +31,4 @@ for byte in byteList:
 
 IO.output(pin, IO.LOW)
 
-GPIO.cleanup()
+IO.cleanup()
