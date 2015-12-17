@@ -141,8 +141,8 @@ static void send(PyObject* self, PyObject* pList){
 			//usleep(1);
 			//nanosleep(&delay, NULL);
 			int k;
-			for(k=0;k<2;k++){
-				asm("nop");
+			for(k=0;k<20000;k++){
+				asm("nop")
 			}
         }
     }
