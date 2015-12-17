@@ -160,8 +160,13 @@ static void writetofile(){
 	fp = fopen("file.txt","w");
 	while(1)
 	{
-		fprintf("%ld", GET_GPIO(17));
-		//fprintf(fp,"%zd",GET_GPIO(17));
+		if(GET_GPIO(17)){
+			fprintf(fp,"%s","1");
+		}
+		else{
+			fprintf(fp,"%s","0");
+		}
+		
 	}
 	fclose(fp);
    
