@@ -142,7 +142,7 @@ static void send(PyObject* self, PyObject* pList){
 			//nanosleep(&delay, NULL);
 			int k;
 			for(k=0;k<20000;k++){
-				asm("nop")
+				asm("nop");
 			}
         }
     }
