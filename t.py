@@ -35,7 +35,8 @@ if(longByte!=''):
 	byteList.append(longByte)
 	longByte = ''
 
-print len(byteList);
+#print len(byteList);
+print byteList
 
 fastgpio.send(byteList)
 
