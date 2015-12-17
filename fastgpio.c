@@ -104,7 +104,11 @@ static void send(PyObject* self, PyObject* pList){
 
 
     int numLines;       /* how many lines we passed for parsing */
-	char * line;
+	char * line;		/* pointer to the line as a string */
+	
+	
+    PyObject * listObj; /* the list of strings */
+    PyObject * strObj;  /* one string in the list */
 	
 	/* get the number of lines passed to us */
 	numLines = PyList_Size(pList);
@@ -120,7 +124,7 @@ static void send(PyObject* self, PyObject* pList){
         strObj = PyList_GetItem(pList, i); /* Can't fail */
 
         /* make it a string */
-        line = PyString_AsString( strObj );
+        line = PyString_AsString(strObj);
 		
 		fprintf(stdout, "Ref count was: %zd\n", strObj->ob_refcnt);
 
