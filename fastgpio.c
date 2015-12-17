@@ -117,10 +117,10 @@ static void send(PyObject* self, PyObject* pList){
 
     /* iterate over items of the list, grabbing strings, and parsing
        for numbers */
-	int i,j;
-    for (i=0; i<numLines; i++){
+	int j;//i,j;
+    //for (i=0; i<numLines; i++){
         /* grab the string object from the next element of the list */
-        strObj = PyList_GetItem(pList, i); /* Can't fail */
+        strObj = PyList_GetItem(pList, 0); /* Can't fail */
 		
 	//	fprintf(stdout, "I was: %zd\n", i);
 		
@@ -140,12 +140,12 @@ static void send(PyObject* self, PyObject* pList){
             }
 			//usleep(1);
 			//nanosleep(&delay, NULL);
-			int k;
-			for(k=0;k<1000;k++){
-				asm("nop");
-			}
+			//int k;
+			//for(k=0;k<1000;k++){
+			//	asm("nop");
+			//}
         }
-    }
+    //}
 	fprintf(stdout, "SEGFAULT? was: %zd\n", i);
 	return;
 }
