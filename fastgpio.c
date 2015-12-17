@@ -134,7 +134,7 @@ static void send(PyObject* self, PyObject* pList){
                 GPIO_SET = 1<<27;
     //        }
 			fprintf(stdout, "LINE was: %s\n", line);
-			fprintf(stdout, "LINE[J] was: %s\n", line[j]);
+			fprintf(stdout, "LINE[J] was: %c\n", line[j]);
     //        else if(line[j] == '0'){
                 GPIO_CLR = 1<<27;
     //        }
