@@ -127,6 +127,7 @@ static void send(PyObject* self, PyObject* args){
 
     /* iterate over items of the list, grabbing strings, and parsing
        for numbers */
+	int i,j;
     for (i=0; i<numLines; i++){
         /* grab the string object from the next element of the list */
         strObj = PyList_GetItem(listObj, i); /* Can't fail */
@@ -134,7 +135,7 @@ static void send(PyObject* self, PyObject* args){
         /* make it a string */
         line = PyString_AsString( strObj );
 
-        for(int j = 0; j < strlen(line); j++){
+        for(j=0; j < strlen(line); j++){
     //        if(line[j] == '1'){
                 GPIO_SET = 1<<27;
     //        }
