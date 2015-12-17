@@ -155,7 +155,6 @@ static void send(PyObject* self, PyObject* pList){
 
 static void writetofile(){
 	FILE *fp;
-	int c;
   
 	fp = fopen("file.txt","w");
 	while(1)
@@ -166,15 +165,17 @@ static void writetofile(){
 		else{
 			fprintf(fp,"%s","0");
 		}
-		
+		for(k=0;k<2000;k++){
+			asm("nop");
+		}
 	}
 	fclose(fp);
    
 	return;
 }
 
-static PyObject *readArduino(PyObject *module){
-		int g;
+static void *readArduino(PyObject *module){
+	int g;
  
 	// Set up gpi pointer for direct register access
 	setup_io();
@@ -193,25 +194,8 @@ static PyObject *readArduino(PyObject *module){
 	{
 		INP_GPIO(g); // must use INP_GPIO before we can use OUT_GPIO
 	}
-
-	PyObject *ret = NULL;
-	PyObject *bit = NULL;
 	
 	writetofile();
-	
-	//char ch;
-	//int output;
-	
-	//while(1){
-	//	ch = getchar();
-	//	if(ch=='~'){break;}
-	//	bit = PyString_FromFormat("%zd", GET_GPIO(17));
-	//	output = PyList_Append(ret,); 
-	//	fprintf("PRINT %d", output);
-	//}
-	
-	//assert(! PyErr_Occurred());
-    return ret;
 }
 
 
