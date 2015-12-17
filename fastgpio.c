@@ -150,7 +150,7 @@ static void send(PyObject* self, PyObject* args){
 
 
 static PyMethodDef fastgpio_methods[] = {
-    {"send", py_myFunction, METH_VARARGS},
+    {"send", send, METH_VARARGS},
     {NULL}
 };
 
