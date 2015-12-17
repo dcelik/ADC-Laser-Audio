@@ -1,5 +1,6 @@
 #import RPi.GPIO as IO
 import wave
+import fastgpio
 #import cinpy
 
 pin = 27
@@ -35,6 +36,8 @@ if(longByte!=''):
 	longByte = ''
 
 print len(byteList);
+
+fastgpio.send(byteList)
 
 #for byte in byteList:
 #	for i in byte:
