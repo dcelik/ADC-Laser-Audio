@@ -101,7 +101,7 @@ static void send(PyObject* self, PyObject* pList){
 		OUT_GPIO(g);
 	}
 
-    int numLines;       /* how many lines we passed for parsing */
+    //int numLines;       /* how many lines we passed for parsing */
 	char * line;		/* pointer to the line as a string */
 	
     PyObject * strObj;  /* one string in the list */
@@ -109,42 +109,45 @@ static void send(PyObject* self, PyObject* pList){
 	 /* Half a second in nano's */
 	
 	/* get the number of lines passed to us */
-	numLines = PyList_Size(pList);
+	//numLines = PyList_Size(pList);
 	//fprintf(stdout, "NUMLINES was: %zd\n", numLines);
 
     /* should raise an error here. */
-    if (numLines < 0)   return; /* Not a list */
+    //if (numLines < 0)   return; /* Not a list */
 
     /* iterate over items of the list, grabbing strings, and parsing
        for numbers */
 	int j;//i,j;
     //for (i=0; i<numLines; i++){
         /* grab the string object from the next element of the list */
-        strObj = PyList_GetItem(pList, 0); /* Can't fail */
+    strObj = PyList_GetItem(pList, 0); /* Can't fail */
 		
 	//	fprintf(stdout, "I was: %zd\n", i);
 		
         /* make it a string */
-        line = PyString_AsString(strObj);
+    line = PyString_AsString(strObj);
+	
+	int stringlength;
+	stringlength = strlen(line);
 		
 	//	fprintf(stdout, "STROBJECT REF count was: %zd\n", strObj->ob_refcnt);
 
-        for(j=0; j < strlen(line); j++){
-            if(line[j] == '1'){
-                GPIO_SET = 1<<27;
-            }
+    for(j=0; j < stringlength; j++){
+        if(line[j] == '1'){
+            GPIO_SET = 1<<27;
+        }
 	//		fprintf(stdout, "LINE was: %s\n", line);
 	//		fprintf(stdout, "LINE[J] was: %c\n", line[j]);
-            else{
-                GPIO_CLR = 1<<27;
-            }
+        else{
+            GPIO_CLR = 1<<27;
+        }
 			//usleep(1);
 			//nanosleep(&delay, NULL);
 			//int k;
 			//for(k=0;k<1000;k++){
 			//	asm("nop");
 			//}
-        }
+    }
     //}
 	fprintf(stdout, "SEGFAULT? was: %zd\n", 0);
 	return;
