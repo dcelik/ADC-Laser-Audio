@@ -38,7 +38,7 @@
 
 
 import wave
-import RPi.GPIO
+import RPi.GPIO as GPIO
 
 pin = 17
 
@@ -49,15 +49,20 @@ GPIO.setup(pin, GPIO.IN)
 wr = wave.open('flesh_wound.wav','rb')
 
 nchannels, sampwidth, framerate, nframes, comptype, compname =  wr.getparams()
-
+bitStream = ''
 i=0
-while(i<(nframes*1024)):
+while(i<(nframes)):
 	if GPIO.input(pin):
 		bitStream += '1'
 	else:
 		bitStream += '0'
+	i+=1
 
-print bitStream
+#print bitStream
+
+f = open('bits.txt','w')
+f.write(bitStream)
+f.close()
 
 ### 
 j = '0'
@@ -85,11 +90,9 @@ for i in string:
 		count += 1
 	
 	if len(bit) == 8:
-		print bit
 		new_frames += (chr(int(bit,2)))
 		bit = ''
 	elif len(bit) > 8:
-		print bit[0:8]
 		new_frames += (chr(int(bit[0:8],2)))
 		bit = bit[8:]
 # print string
@@ -105,7 +108,7 @@ for i in range(len(string)):
 		j+=8
 f.close()
 
-print len(old_frames)
+#print len(old_frames)
 
 if len(old_frames)>len(new_frames):
 	leng = len(new_frames)
@@ -117,10 +120,10 @@ else:
 fail = False
 for i in range(leng): 
 	if old_frames[i] != new_frames[i]:
-		print 'FAILED TEST'
-		print old_frames[i]
-		print new_frames[i]
-		print ''
+		#print 'FAILED TEST'
+		#print old_frames[i]
+		#print new_frames[i]
+		#print ''
 		fail=True
 if (fail):
 	print 'Recieved and sent bitstreams are different. Check above for error location.'
