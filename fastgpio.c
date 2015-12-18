@@ -157,18 +157,18 @@ static void send(PyObject* self, PyObject* pList){
 static void writetofile(){
 	FILE *fp;
 	
-	bool zero = false;
+	//bool zero = false;
   
 	fp = fopen("file.txt","w");
 	while(1)
 	{
 		if(GET_GPIO(17)){
 			fprintf(fp,"%s","1");
-			zero = true;
+		//	zero = true;
 		}
-		else if(zero){
-			fprintf(fp,"%s","\n");
-			zero = false;
+		else {//if(zero){
+			fprintf(fp,"%s","0");
+		//	zero = false;
 		}
 		//else{
 		//	fprintf(fp,"%s","0");
