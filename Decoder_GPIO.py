@@ -39,6 +39,7 @@
 
 import wave
 import RPi.GPIO as GPIO
+import time
 
 pin = 17
 
@@ -51,12 +52,14 @@ wr = wave.open('flesh_wound.wav','rb')
 nchannels, sampwidth, framerate, nframes, comptype, compname =  wr.getparams()
 bitStream = ''
 i=0
+sec = 2
 while(i<(nframes*12)):
 	if GPIO.input(pin):
 		bitStream += '1'
 	else:
 		bitStream += '0'
 	i+=1
+	time.sleep(sec/100000000.0)
 
 #print bitStream
 
