@@ -163,11 +163,11 @@ static void writetofile(){
 	while(1)
 	{
 		if(GET_GPIO(17)){
-			fprintf(fp,"%s","1");
+			fprintf(fp,"%s","0");
 		//	zero = true;
 		}
 		else {//if(zero){
-			fprintf(fp,"%s","0");
+			fprintf(fp,"%s","1");
 		//	zero = false;
 		}
 		//else{
