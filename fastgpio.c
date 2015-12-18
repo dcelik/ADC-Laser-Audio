@@ -167,7 +167,7 @@ static void writetofile(){
 			bool zero = true;
 		}
 		else if(zero){
-			fprintf(fp,"%s","0");
+			fprintf(fp,"%s","\n");
 			bool zero = false;
 		}
 		//else{
