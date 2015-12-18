@@ -60,7 +60,7 @@ for i in string:
 			bit += str(1-int(j))
 			count = 0
 		else:
-			loop = count/8
+			loop = count/6
 			for i in range(int(loop)):
 				bit += str(1-int(j))
 				count = 0
@@ -68,11 +68,9 @@ for i in string:
 		count += 1
 	
 	if len(bit) == 8:
-		print bit
 		new_frames += (chr(int(bit,2)))
 		bit = ''
 	elif len(bit) > 8:
-		print bit[0:8]
 		new_frames += (chr(int(bit[0:8],2)))
 		bit = bit[8:]
 # print string
@@ -101,8 +99,8 @@ fail = False
 for i in range(leng): 
 	if old_frames[i] != new_frames[i]:
 		print 'FAILED TEST'
-		print old_frames[i]
-		print new_frames[i]
+		print ord(old_frames[i])
+		print ord(new_frames[i])
 		print ''
 		fail=True
 if (fail):
