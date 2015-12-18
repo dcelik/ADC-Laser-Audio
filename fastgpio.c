@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <stdbool.h>
 #include <sys/mman.h>
 #include <unistd.h>
  
@@ -155,18 +156,21 @@ static void send(PyObject* self, PyObject* pList){
 
 static void writetofile(){
 	FILE *fp;
+	
+	bool zero = false;
   
 	fp = fopen("file.txt","w");
 	while(1)
 	{
 		if(GET_GPIO(17)){
 			fprintf(fp,"%s","1");
+			
 		}
 		//else{
 		//	fprintf(fp,"%s","0");
 		//}
 		int k;
-		for(k=0;k<3000;k++){
+		for(k=0;k<500;k++){
 			asm("nop");
 		}
 	}
