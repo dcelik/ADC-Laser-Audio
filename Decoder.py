@@ -55,14 +55,15 @@ for i in string:
 	
 	if (i == j):
 		count += 1
+
 	else:
 		if (count <= 10 and count > 3):
-			bit += str(1-int(j))
+			bit += j
 			count = 0
 		else:
 			loop = count/6
 			for i in range(int(loop)):
-				bit += str(1-int(j))
+				bit += j
 				count = 0
 		j = str(1-int(j))
 		count += 1
@@ -98,7 +99,7 @@ else:
 fail = False
 for i in range(leng): 
 	if old_frames[i] != new_frames[i]:
-		print 'FAILED TEST'
+		print 'FAILED TEST at '+str(i)
 		print ord(old_frames[i])
 		print ord(new_frames[i])
 		print ''
