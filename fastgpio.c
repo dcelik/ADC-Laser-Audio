@@ -173,10 +173,10 @@ static void writetofile(){
 		//else{
 		//	fprintf(fp,"%s","0");
 		//}
-		int k;
-		for(k=0;k<500;k++){
-			asm("nop");
-		}
+		//int k;
+		//for(k=0;k<500;k++){
+		//	asm("nop");
+		//}
 	}
 	
 	fclose(fp);
