@@ -1,7 +1,12 @@
-##import RPi.GPIO as GPIO
 ##from audiolazy import *
 import wave
 import pyaudio
+import RPi.GPIO as GPIO
+
+pin = 27
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(pin, GPIO.OUT)
 
 wr = wave.open('flesh_wound.wav','rb')
 
@@ -32,38 +37,46 @@ for s1 in list(frames):
 if(longByte!=''):
 	byteList.append(longByte)
 
-j = 8;
-for i in range(len(longByte)):
-	if (j - 9 < i):
-		new_frames += chr(int(longByte[i:j],2))
-		j+=8
+for i in longByte:
+	if i == '1':
+		GPIO.output(pin, GPIO.HIGH)
+	elif i == '0':
+		GPIO.output(pin, GPIO.LOW)
 
-j=8
-old_frames = ''
-f = open( 'sent_bitstream.txt', 'r' )
-string = f.read()
-for i in range(len(string)):
-	if (j - 9 < i):
-		old_frames += (chr(int(string[i:j],2)))
-		j+=8
-f.close()
+GPIO.output(pin, GPIO.LOW)
 
-print len(old_frames)
-fail = False
-for i in range(len(list(old_frames))): 
-	if old_frames[i] != new_frames[i]:
-		print 'FAILED TEST'
-		print old_frames[i]
-		print new_frames[i]
-		print ''
-		fail=True
-if (fail):
-	print 'Recieved and sent bitstreams are different. Check above for error location.'
-else:
-	print 'ALL BITS EQUAL'
-	print 'Be happy cause it worked...'
+# j = 8;
+# for i in range(len(longByte)):
+# 	if (j - 9 < i):
+# 		new_frames += chr(int(longByte[i:j],2))
+# 		j+=8
 
-ww = wave.open('mono.wav','wb')
-ww.setparams((1,sampwidth,framerate,nframes,comptype,compname))
+# j=8
+# old_frames = ''
+# f = open( 'sent_bitstream.txt', 'r' )
+# string = f.read()
+# for i in range(len(string)):
+# 	if (j - 9 < i):
+# 		old_frames += (chr(int(string[i:j],2)))
+# 		j+=8
+# f.close()
 
-ww.writeframes(new_frames)
+# print len(old_frames)
+# fail = False
+# for i in range(len(list(old_frames))): 
+# 	if old_frames[i] != new_frames[i]:
+# 		print 'FAILED TEST'
+# 		print old_frames[i]
+# 		print new_frames[i]
+# 		print ''
+# 		fail=True
+# if (fail):
+# 	print 'Recieved and sent bitstreams are different. Check above for error location.'
+# else:
+# 	print 'ALL BITS EQUAL'
+# 	print 'Be happy cause it worked...'
+
+# ww = wave.open('mono.wav','wb')
+# ww.setparams((1,sampwidth,framerate,nframes,comptype,compname))
+
+# ww.writeframes(new_frames)
