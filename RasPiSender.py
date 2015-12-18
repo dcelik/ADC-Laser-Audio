@@ -42,7 +42,7 @@ f.close()
 
 print len(byteList);
 
-test=['1100110011001100']
+test=['1100110011001100110011001100110011001100110011001100110011001100']
 send = [test[0]]
 fastgpio.send(send)
 
