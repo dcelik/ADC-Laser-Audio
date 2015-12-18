@@ -57,14 +57,14 @@ for i in string:
 		count += 1
 	else:
 		if (count <= 10 and count > 3):
-			bit += j
+			bit += str(1-int(j))
 			count = 0
 		else:
 			loop = count/8
 			for i in range(int(loop)):
-				bit += j
+				bit += str(1-int(j))
 				count = 0
-		j =str(1-int(j))
+		j = str(1-int(j))
 		count += 1
 	
 	if len(bit) == 8:
