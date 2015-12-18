@@ -43,15 +43,40 @@ wr = wave.open('flesh_wound.wav','rb')
 
 nchannels, sampwidth, framerate, nframes, comptype, compname =  wr.getparams()
 
-j=8
+j = '0'
+count = 0
 new_frames = ''
+bit = ''
 f = open( 'temp.txt', 'r' )
 string = f.read()
-for i in range(len(string)):
-	if (j - 9 < i):
-		new_frames += (chr(int(string[i:j],2)))
-		j+=8
 f.close()
+
+for i in string:
+	
+	if (i == j):
+		count += 1
+	else:
+		if (count <= 10 and count > 3):
+			bit += j
+			count = 0
+		else:
+			loop = count/8
+			for i in range(int(loop)):
+				bit += j
+				count = 0
+		j =str(1-int(j))
+		count += 1
+	
+	if len(bit) == 8:
+		print bit
+		new_frames += (chr(int(bit,2)))
+		bit = ''
+	elif len(bit) > 8:
+		print bit[0:8]
+		new_frames += (chr(int(bit[0:8],2)))
+		bit = bit[8:]
+# print string
+# print list(new_frames)
 
 j=8
 old_frames = ''
