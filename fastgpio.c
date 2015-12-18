@@ -162,7 +162,7 @@ static void writetofile(){
 	fp = fopen("file.txt","w");
 	while(1)
 	{
-		if(GET_GPIO(17)){
+		if(!GET_GPIO(17)){
 			fprintf(fp,"%s","1");
 			zero = true;
 		}
