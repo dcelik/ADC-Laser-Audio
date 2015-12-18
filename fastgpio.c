@@ -162,9 +162,9 @@ static void writetofile(){
 		if(GET_GPIO(17)){
 			fprintf(fp,"%s","1");
 		}
-		else{
-			fprintf(fp,"%s","0");
-		}
+		//else{
+		//	fprintf(fp,"%s","0");
+		//}
 		int k;
 		for(k=0;k<3000;k++){
 			asm("nop");
