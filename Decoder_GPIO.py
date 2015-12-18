@@ -44,7 +44,7 @@ import time
 pin = 17
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(pin, GPIO.IN)
+GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 
 wr = wave.open('flesh_wound.wav','rb')
