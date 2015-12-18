@@ -19,11 +19,11 @@ else:
 	frames = 0
 
 byteList = []
-
+msg = 'sos'
 # i = 0
 longByte = ''
 
-for s1 in list(frames):
+for s1 in msg: #list(frames)
 	longByte += ''.join('{0:08b}'.format(ord(x), 'b') for x in s1)
 	# i += 1
 
