@@ -43,7 +43,7 @@ f.close()
 print len(byteList);
 
 test=['10101010']
-send = [test[0]+byteList[0]]
+send = [test[0]+byteList[0]+test[0]]
 fastgpio.send(send)
 
 #for byte in byteList:
