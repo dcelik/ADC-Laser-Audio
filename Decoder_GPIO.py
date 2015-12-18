@@ -65,79 +65,79 @@ f.write(bitStream)
 f.close()
 
 ### 
-j = '0'
-count = 0
-new_frames = ''
-bit = ''
-f = open( 'temp.txt', 'r' )
-string = f.read()
-f.close()
+# j = '0'
+# count = 0
+# new_frames = ''
+# bit = ''
+# f = open( 'temp.txt', 'r' )
+# string = f.read()
+# f.close()
 
-for i in string:
+# for i in string:
 	
-	if (i == j):
-		count += 1
-	else:
-		if (count <= 10 and count > 3):
-			bit += str(1-int(j))
-			count = 0
-		else:
-			loop = count/8
-			for i in range(int(loop)):
-				bit += str(1-int(j))
-				count = 0
-		j = str(1-int(j))
-		count += 1
+# 	if (i == j):
+# 		count += 1
+# 	else:
+# 		if (count <= 10 and count > 3):
+# 			bit += str(1-int(j))
+# 			count = 0
+# 		else:
+# 			loop = count/8
+# 			for i in range(int(loop)):
+# 				bit += str(1-int(j))
+# 				count = 0
+# 		j = str(1-int(j))
+# 		count += 1
 	
-	if len(bit) == 8:
-		new_frames += (chr(int(bit,2)))
-		bit = ''
-	elif len(bit) > 8:
-		new_frames += (chr(int(bit[0:8],2)))
-		bit = bit[8:]
-# print string
-# print list(new_frames)
+# 	if len(bit) == 8:
+# 		new_frames += (chr(int(bit,2)))
+# 		bit = ''
+# 	elif len(bit) > 8:
+# 		new_frames += (chr(int(bit[0:8],2)))
+# 		bit = bit[8:]
+# # print string
+# # print list(new_frames)
 
-j=8
-old_frames = ''
-f = open( 'sent_bitstream.txt', 'r' )
-string = f.read()
-for i in range(len(string)):
-	if (j - 9 < i):
-		old_frames += (chr(int(string[i:j],2)))
-		j+=8
-f.close()
+# j=8
+# old_frames = ''
+# f = open( 'sent_bitstream.txt', 'r' )
+# string = f.read()
+# for i in range(len(string)):
+# 	if (j - 9 < i):
+# 		old_frames += (chr(int(string[i:j],2)))
+# 		j+=8
+# f.close()
 
-#print len(old_frames)
+# #print len(old_frames)
 
-if len(old_frames)>len(new_frames):
-	leng = len(new_frames)
-elif len(old_frames)<len(new_frames):
-	leng = len(old_frames)
-else:
-	leng = len(old_frames)
+# if len(old_frames)>len(new_frames):
+# 	leng = len(new_frames)
+# elif len(old_frames)<len(new_frames):
+# 	leng = len(old_frames)
+# else:
+# 	leng = len(old_frames)
 
-fail = False
-for i in range(leng): 
-	if old_frames[i] != new_frames[i]:
-		#print 'FAILED TEST'
-		#print old_frames[i]
-		#print new_frames[i]
-		#print ''
-		fail=True
-if (fail):
-	print 'Recieved and sent bitstreams are different. Check above for error location.'
-else:
-	print 'ALL BITS EQUAL'
-	print 'Be happy cause it worked...'
+# fail = False
+# for i in range(leng): 
+# 	if old_frames[i] != new_frames[i]:
+# 		#print 'FAILED TEST'
+# 		#print old_frames[i]
+# 		#print new_frames[i]
+# 		#print ''
+# 		fail=True
+# if (fail):
+# 	print 'Recieved and sent bitstreams are different. Check above for error location.'
+# else:
+# 	print 'ALL BITS EQUAL'
+# 	print 'Be happy cause it worked...'
 
-print len(old_frames)
-print len(new_frames)
+# print len(old_frames)
+# print len(new_frames)
 
-ww = wave.open('mono.wav','wb')
-ww.setparams((1,sampwidth,framerate,nframes,comptype,compname))
+# ww = wave.open('mono.wav','wb')
+# ww.setparams((1,sampwidth,framerate,nframes,comptype,compname))
 
-ww.writeframes(new_frames)
+# ww.writeframes(new_frames)
 ###
 # for i in range(0,len(data)):
 # 	data[i] = data[i].strip('\r\n')
