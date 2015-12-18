@@ -51,7 +51,7 @@ wr = wave.open('flesh_wound.wav','rb')
 nchannels, sampwidth, framerate, nframes, comptype, compname =  wr.getparams()
 bitStream = ''
 i=0
-while(i<(nframes)):
+while(i<(nframes*12)):
 	if GPIO.input(pin):
 		bitStream += '1'
 	else:
