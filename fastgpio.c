@@ -166,7 +166,7 @@ static void writetofile(){
 			fprintf(fp,"%s","0");
 		}
 		int k;
-		for(k=0;k<500;k++){
+		for(k=0;k<10;k++){
 			asm("nop");
 		}
 	}
