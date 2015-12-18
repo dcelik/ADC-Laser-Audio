@@ -162,13 +162,13 @@ static void writetofile(){
 	fp = fopen("file.txt","w");
 	while(1)
 	{
-		if(zero){
-			fprintf(fp,"%s","\n");
-			zero = false;
-		}
-		else if(GET_GPIO(17)==0){
+		if(GET_GPIO(17)){
 			fprintf(fp,"%s","1");
 			zero = true;
+		}
+		else if(zero){
+			fprintf(fp,"%s","\n");
+			zero = false;
 		}
 		//else{
 		//	fprintf(fp,"%s","0");
